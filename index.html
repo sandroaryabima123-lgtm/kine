@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINE — Digital Innovation Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --electric: #00f3ff;
+            --violet: #b14bff;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero-bg {
+            background: radial-gradient(circle at 50% 50%, rgba(177, 75, 255, 0.15) 0%, transparent 70%),
+                        radial-gradient(circle at 20% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 70%);
+            animation: gradientShift 25s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 40px -10px #00f3ff,
+                        0 0 80px -20px #00f3ff;
+        }
+
+        .glow-violet {
+            box-shadow: 0 0 40px -10px #b14bff,
+                        0 0 80px -20px #b14bff;
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 1.05;
+            letter-spacing: -0.05em;
+        }
+
+        .nav-link {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .nav-link:hover {
+            color: #00f3ff;
+            transform: translateY(-2px);
+        }
+
+        .creator-avatar {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .creator-avatar:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px -5px #00f3ff;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .portfolio-card {
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .portfolio-card:hover {
+            transform: scale(1.04) translateY(-12px);
+            box-shadow: 0 0 60px -15px rgb(0 243 255);
+        }
+
+        .service-card {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-20px);
+            border-color: #00f3ff;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(to right, #00f3ff, #b14bff);
+            z-index: 50;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- SCROLL PROGRESS -->
+    <div id="progress" class="scroll-progress w-0"></div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+        <div class="max-w-screen-2xl mx-auto px-8 py-6 flex items-center justify-between">
+            
+            <!-- LEFT: KINE + CREATOR -->
+            <div class="flex items-center gap-x-8">
+                <!-- KINE Logo -->
+                <div class="flex items-center gap-x-3">
+                    <img src="images/img1.jpg" alt="KINE Logo" class="w-9 h-9 object-contain rounded-full glow-cyan">
+                    <span class="logo-font text-3xl font-semibold tracking-tighter">KINE</span>
+                </div>
+
+                <!-- Creator at the top -->
+                <div class="hidden md:flex items-center gap-x-3 pl-6 border-l border-white/10">
+                    <img src="images/imgprofile.jpg" alt="Sandro Arya Bima" 
+                         class="creator-avatar w-7 h-7 object-cover rounded-2xl border border-cyan-400/40">
+                    <div class="text-xs">
+                        <span class="block font-medium tracking-tight text-white">Sandro Arya Bima</span>
+                        <span class="text-white/40 text-[10px]">Founder &amp; Creative Director</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-x-10 text-sm font-medium tracking-widest">
+                <a href="#capabilities" class="nav-link">CAPABILITIES</a>
+                <a href="#services" class="nav-link">SERVICES</a>
+                <a href="#portfolio" class="nav-link">PORTFOLIO</a>
+                <a href="#product" class="nav-link">PRODUCT</a>
+                <a href="#contact" class="nav-link">CONTACT</a>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="flex items-center gap-x-6">
+                <!-- WhatsApp Button -->
+                <a href="https://wa.me/6281568493882" target="_blank"
+                   class="hidden md:flex items-center gap-x-2 px-6 py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/20 text-sm font-medium transition-all hover:glow-cyan">
+                    <i class="fa-brands fa-whatsapp text-[#25D366]"></i>
+                    <span>CHAT NOW</span>
+                </a>
+
+                <!-- Mobile Hamburger -->
+                <button id="mobile-menu-btn"
+                        class="md:hidden w-11 h-11 flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-black/95 z-40 pt-24 px-8 flex flex-col">
+            <div class="flex flex-col gap-y-8 text-3xl font-medium">
+                <a href="#capabilities" class="mobile-link">CAPABILITIES</a>
+                <a href="#services" class="mobile-link">SERVICES</a>
+                <a href="#portfolio" class="mobile-link">PORTFOLIO</a>
+                <a href="#product" class="mobile-link">PRODUCT</a>
+                <a href="#contact" class="mobile-link">CONTACT</a>
+            </div>
+            
+            <!-- Creator in mobile menu -->
+            <div class="mt-12 flex items-center gap-x-4 px-6 py-6 border-t border-white/10">
+                <img src="images/imgprofile.jpg" alt="Sandro Arya Bima" 
+                     class="w-12 h-12 object-cover rounded-2xl border border-cyan-400/40">
+                <div>
+                    <span class="font-semibold">Sandro Arya Bima</span>
+                    <span class="block text-xs text-white/50">Founder • KINE</span>
+                </div>
+            </div>
+            
+            <div class="mt-auto pb-12">
+                <a href="https://wa.me/6281568493882" target="_blank"
+                   class="flex items-center justify-center gap-x-3 bg-gradient-to-r from-[#00f3ff] to-[#b14bff] text-black font-semibold py-6 rounded-3xl text-xl">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    MESSAGE ON WHATSAPP
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden hero-bg">
+        <!-- PARTICLE CANVAS -->
+        <canvas id="hero-canvas" class="absolute inset-0 z-0"></canvas>
+
+        <!-- Floating abstract shapes -->
+        <div class="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-cyan-400/10 to-violet-500/10 rounded-[40%] blur-3xl animate-float-slow"></div>
+        <div class="absolute bottom-32 right-20 w-96 h-96 bg-gradient-to-br from-violet-500/10 to-cyan-400/10 rounded-[50%] blur-3xl animate-float"></div>
+
+        <div class="relative z-10 max-w-screen-2xl mx-auto px-8 text-center">
+
+
+            <!-- Brand -->
+            <h1 class="logo-font text-[13vw] md:text-[11rem] leading-none font-semibold tracking-[-0.07em] mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-300 to-violet-300">
+                KINE
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-2xl md:text-3xl font-light tracking-tight text-white/70 mb-16">
+                Building AI, Digital Products,<br>and Future Technology
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="https://wa.me/6281568493882" target="_blank"
+                   class="group px-10 py-6 rounded-3xl bg-white text-black font-semibold text-lg flex items-center gap-x-3 hover:scale-105 transition-all duration-500 glow-cyan">
+                    <span>TALK TO US</span>
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                </a>
+                
+                <a href="#portfolio" 
+                   class="group px-10 py-6 rounded-3xl border-2 border-white/70 hover:border-white font-medium text-lg flex items-center gap-x-3 transition-all duration-500 hover:glow-violet">
+                    <span>VIEW PROJECTS</span>
+                    <i class="fa-solid fa-arrow-down text-sm transition-transform group-hover:translate-y-1"></i>
+                </a>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-12 left-1/2 flex flex-col items-center gap-y-2 text-white/40 text-xs tracking-widest">
+                <div class="w-px h-12 bg-gradient-to-b from-transparent via-white/40 to-transparent"></div>
+                <span>SCROLL TO EXPLORE</span>
+            </div>
+        </div>
+
+        <!-- Bottom glow -->
+        <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black to-transparent z-20"></div>
+    </section>
+
+    <!-- CAPABILITIES – CINEMATIC SCROLL SECTIONS -->
+    <div id="capabilities" class="space-y-32">
+        <!-- (unchanged sections - AI, Web, Brand, Digital Products) -->
+        <section class="min-h-screen flex items-center relative bg-black py-20">
+            <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-7">
+                    <div class="inline-flex items-center gap-x-3 px-6 py-3 rounded-3xl border border-cyan-400/30 text-cyan-400 text-sm mb-6">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-400"></span>
+                        </span>
+                        NEXT-GEN AI
+                    </div>
+                    <h2 class="section-title text-white">AI Tools<br>Innovation</h2>
+                    <p class="mt-10 max-w-lg text-xl text-white/70 leading-relaxed">
+                        We engineer intelligent systems that don’t just automate — they anticipate, create, and evolve.
+                    </p>
+                    <a href="#services" class="mt-12 inline-flex items-center gap-x-4 text-cyan-400 group">
+                        EXPLORE AI SOLUTIONS
+                        <span class="block w-12 h-px bg-cyan-400 group-hover:w-20 transition-all"></span>
+                    </a>
+                </div>
+                <div class="md:col-span-5 relative">
+                    <div class="glass rounded-3xl p-8 glow-cyan">
+                        <div class="aspect-video bg-gradient-to-br from-violet-500/10 to-cyan-500/10 rounded-2xl flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fa-solid fa-brain text-7xl text-white/20"></i>
+                                <p class="mt-4 text-xs tracking-widest">INTELLIGENCE ENGINE</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Web -->
+        <section class="min-h-screen flex items-center relative bg-black py-20">
+            <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-5 relative order-2 md:order-1">
+                    <div class="glass rounded-3xl p-8 glow-violet">
+                        <div class="aspect-video bg-black rounded-2xl flex items-center justify-center border border-white/10">
+                            <div class="text-6xl font-light text-white/10">∞</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-7 order-1 md:order-2">
+                    <div class="inline-flex items-center gap-x-3 px-6 py-3 rounded-3xl border border-violet-400/30 text-violet-400 text-sm mb-6">
+                        FUTURE WEB
+                    </div>
+                    <h2 class="section-title text-white">Web Development<br>Reimagined</h2>
+                    <p class="mt-10 max-w-lg text-xl text-white/70 leading-relaxed">
+                        Blazing-fast, AI-native websites that feel alive. Built with glassmorphism, motion, and intelligence.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Identity -->
+        <section class="min-h-screen flex items-center relative bg-black py-20">
+            <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-7">
+                    <div class="inline-flex items-center gap-x-3 px-6 py-3 rounded-3xl border border-white/30 text-white text-sm mb-6">
+                        BRAND FUTURE
+                    </div>
+                    <h2 class="section-title text-white">Brand Identity<br>Design</h2>
+                    <p class="mt-10 max-w-lg text-xl text-white/70 leading-relaxed">
+                        We don’t create logos. We create digital souls that resonate across universes.
+                    </p>
+                </div>
+                <div class="md:col-span-5">
+                    <div class="aspect-square bg-gradient-to-br from-white/5 to-transparent rounded-3xl glass p-12 flex items-center justify-center">
+                        <div class="w-40 h-40 rounded-2xl border-2 border-dashed border-white/30 flex items-center justify-center text-6xl">K</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Digital Products -->
+        <section class="min-h-screen flex items-center relative bg-black py-20">
+            <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-5 relative">
+                    <div class="glass rounded-3xl p-8 glow-cyan">
+                        <img src="images/img2.jpg" alt="Digital Product" 
+                             class="w-full rounded-2xl shadow-2xl">
+                    </div>
+                </div>
+                <div class="md:col-span-7">
+                    <div class="inline-flex items-center gap-x-3 px-6 py-3 rounded-3xl border border-cyan-400/30 text-cyan-400 text-sm mb-6">
+                        DIGITAL CREATION
+                    </div>
+                    <h2 class="section-title text-white">Digital Product<br>Creation</h2>
+                    <p class="mt-10 max-w-lg text-xl text-white/70 leading-relaxed">
+                        From idea to launch in weeks. SaaS, apps, tools — designed for the future.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services" class="py-32 bg-black relative">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <span class="px-8 py-3 text-xs tracking-[0.125em] border border-white/20 rounded-3xl">WHAT WE BUILD</span>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service cards (unchanged) -->
+                <div class="service-card glass rounded-3xl p-10 border border-white/10 hover:border-cyan-400 group">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-400 flex items-center justify-center text-3xl mb-8">🧠</div>
+                    <h3 class="text-3xl font-semibold mb-4">AI Tools Development</h3>
+                    <p class="text-white/70">Custom AI agents, automation engines, and intelligent assistants that scale with your vision.</p>
+                </div>
+                <div class="service-card glass rounded-3xl p-10 border border-white/10 hover:border-cyan-400 group">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-3xl mb-8">🌐</div>
+                    <h3 class="text-3xl font-semibold mb-4">Web Development</h3>
+                    <p class="text-white/70">Immersive, lightning-fast digital experiences that redefine industry standards.</p>
+                </div>
+                <div class="service-card glass rounded-3xl p-10 border border-white/10 hover:border-cyan-400 group">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-white flex items-center justify-center text-3xl mb-8">✦</div>
+                    <h3 class="text-3xl font-semibold mb-4">Logo Design</h3>
+                    <p class="text-white/70">Timeless marks with futuristic energy. Your identity, elevated to another dimension.</p>
+                </div>
+                <div class="service-card glass rounded-3xl p-10 border border-white/10 hover:border-cyan-400 group">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-400 flex items-center justify-center text-3xl mb-8">∞</div>
+                    <h3 class="text-3xl font-semibold mb-4">Brand Identity</h3>
+                    <p class="text-white/70">Complete visual systems that tell your story across every touchpoint.</p>
+                </div>
+                <div class="service-card glass rounded-3xl p-10 border border-white/10 hover:border-cyan-400 group">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-400 flex items-center justify-center text-3xl mb-8">📱</div>
+                    <h3 class="text-3xl font-semibold mb-4">Product Mockups</h3>
+                    <p class="text-white/70">Hyper-realistic 3D renders and interactive prototypes that sell before you build.</p>
+                </div>
+                <div class="service-card glass rounded-3xl p-10 border border-white/10 hover:border-cyan-400 group">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-violet-400 to-white flex items-center justify-center text-3xl mb-8">🚀</div>
+                    <h3 class="text-3xl font-semibold mb-4">Digital Product Creation</h3>
+                    <p class="text-white/70">End-to-end SaaS, apps, and tools that launch faster and perform better.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="py-32 bg-black">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <span class="text-xs tracking-widest text-white/40">SELECTED WORK</span>
+                    <h2 class="text-6xl font-semibold tracking-tighter">Recent Creations</h2>
+                </div>
+                <a href="#" onclick="alert('Portfolio coming to full site soon');" 
+                   class="hidden md:flex items-center gap-x-3 text-sm text-cyan-400 hover:text-white transition-colors">
+                    VIEW ALL WORK 
+                    <span class="text-3xl leading-none">→</span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div onclick="window.open('https://lynk.id/everrlit','_blank')" 
+                     class="portfolio-card cursor-pointer group relative overflow-hidden rounded-3xl aspect-video">
+                    <img src="images/img2.jpg" alt="Project 1" 
+                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-8 left-8 text-3xl font-light">Project Horizon</div>
+                    <div class="absolute top-8 right-8 px-5 py-2 text-xs bg-white/10 backdrop-blur-md rounded-3xl">AI PLATFORM</div>
+                </div>
+                <div onclick="window.open('https://lynk.id/everrlit','_blank')" 
+                     class="portfolio-card cursor-pointer group relative overflow-hidden rounded-3xl aspect-video">
+                    <img src="images/img3.jpg" alt="Project 2" 
+                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-8 left-8 text-3xl font-light">Neon Nexus</div>
+                    <div class="absolute top-8 right-8 px-5 py-2 text-xs bg-white/10 backdrop-blur-md rounded-3xl">BRANDING</div>
+                </div>
+                <div onclick="window.open('https://lynk.id/everrlit','_blank')" 
+                     class="portfolio-card cursor-pointer group relative overflow-hidden rounded-3xl aspect-video">
+                    <img src="images/img4.jpg" alt="Project 3" 
+                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-8 left-8 text-3xl font-light">Pulse Studio</div>
+                    <div class="absolute top-8 right-8 px-5 py-2 text-xs bg-white/10 backdrop-blur-md rounded-3xl">WEB APP</div>
+                </div>
+                <div onclick="window.open('https://lynk.id/everrlit','_blank')" 
+                     class="portfolio-card cursor-pointer group relative overflow-hidden rounded-3xl aspect-video">
+                    <img src="images/img5.jpg" alt="Project 4" 
+                         class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-8 left-8 text-3xl font-light">Aether OS</div>
+                    <div class="absolute top-8 right-8 px-5 py-2 text-xs bg-white/10 backdrop-blur-md rounded-3xl">PRODUCT</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT SECTION -->
+    <section id="product" class="relative py-32 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="grid lg:grid-cols-12 gap-20 items-center">
+                <div class="lg:col-span-6">
+                    <div class="inline px-6 py-2.5 text-xs font-medium tracking-widest border border-cyan-400/50 rounded-3xl text-cyan-400">NEW PRODUCT</div>
+                    <h2 class="mt-6 text-7xl md:text-8xl font-semibold leading-none tracking-tighter logo-font">
+                        APP WEB BUILDER
+                    </h2>
+                    <p class="mt-10 max-w-lg text-xl text-white/70">
+                        A powerful tool that helps creators, entrepreneurs, and businesses launch modern websites in minutes using AI and smart templates.
+                    </p>
+                    
+                    <div class="mt-14 flex flex-wrap gap-6">
+                        <a href="https://lynk.id/everrlit" target="_blank"
+                           class="px-12 py-6 bg-white text-black rounded-3xl font-semibold text-lg flex items-center gap-x-3 hover:glow-cyan transition-all">
+                            GET THE PRODUCT
+                            <span class="text-xl">→</span>
+                        </a>
+                        
+                        <div onclick="window.open('https://wa.me/6281568493882','_blank')" 
+                             class="px-8 py-6 border border-white/30 hover:border-white rounded-3xl flex items-center gap-x-3 cursor-pointer">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span class="font-medium">Ask about pricing</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-20 grid grid-cols-2 gap-x-12 gap-y-8 text-sm">
+                        <div class="flex gap-x-4">
+                            <span class="text-cyan-400 text-2xl">01</span>
+                            <div>
+                                <div class="font-medium">AI-Powered Templates</div>
+                                <div class="text-white/60 text-xs mt-1">Instant generation with your brand voice</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-x-4">
+                            <span class="text-cyan-400 text-2xl">02</span>
+                            <div>
+                                <div class="font-medium">Real-time Collaboration</div>
+                                <div class="text-white/60 text-xs mt-1">Built for teams and clients</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-x-4">
+                            <span class="text-cyan-400 text-2xl">03</span>
+                            <div>
+                                <div class="font-medium">Export Anywhere</div>
+                                <div class="text-white/60 text-xs mt-1">Webflow, Framer, or custom code</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-x-4">
+                            <span class="text-cyan-400 text-2xl">04</span>
+                            <div>
+                                <div class="font-medium">Zero-code Future</div>
+                                <div class="text-white/60 text-xs mt-1">Launch in under 60 seconds</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 relative">
+                    <div class="glass rounded-3xl p-6 shadow-2xl glow-cyan">
+                        <div class="bg-black rounded-2xl overflow-hidden border border-white/10">
+                            <div class="h-12 bg-zinc-950 flex items-center px-6 gap-x-3">
+                                <div class="flex gap-x-1.5">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <div class="flex-1 text-center text-xs text-white/40">appweb.kine.studio</div>
+                            </div>
+                            <div class="p-8 bg-gradient-to-br from-zinc-900 to-black">
+                                <div class="h-8 w-3/4 bg-white/10 rounded mb-8"></div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="h-40 bg-white/5 rounded-2xl"></div>
+                                    <div class="h-40 bg-white/5 rounded-2xl"></div>
+                                    <div class="h-40 bg-gradient-to-br from-cyan-400/20 to-violet-400/20 rounded-2xl flex items-center justify-center text-4xl">✦</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-6 -right-6 glass px-8 py-4 rounded-3xl text-sm font-medium flex items-center gap-x-3 shadow-2xl">
+                        <span class="text-emerald-400">●</span>
+                        LIVE DEMO
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-32 bg-black">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="glass rounded-3xl p-20 max-w-3xl mx-auto text-center">
+                <h2 class="text-6xl font-semibold tracking-tighter mb-6">Ready to build the future?</h2>
+                <p class="text-white/60 text-xl mb-14">Let’s create something that doesn’t exist yet.</p>
+                
+                <div class="flex flex-col md:flex-row gap-6 justify-center">
+                    <a href="https://wa.me/6281568493882" target="_blank"
+                       class="flex-1 flex items-center justify-center gap-x-4 bg-[#25D366] hover:bg-[#128C7E] text-black font-semibold py-8 rounded-3xl transition-all">
+                        <i class="fa-brands fa-whatsapp text-4xl"></i>
+                        <div class="text-left">
+                            <div class="text-sm opacity-75">WHATSAPP</div>
+                            <div class="text-2xl font-medium">0815-6849-3882</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.instagram.com/kineinnovate?igsh=cDVmMHV4OHZjZnFx" target="_blank"
+                       class="flex-1 flex items-center justify-center gap-x-4 bg-gradient-to-r from-pink-500 via-purple-500 to-violet-500 hover:brightness-110 text-white font-semibold py-8 rounded-3xl transition-all">
+                        <i class="fa-brands fa-instagram text-4xl"></i>
+                        <div class="text-left">
+                            <div class="text-sm opacity-75">INSTAGRAM</div>
+                            <div class="text-2xl font-medium">@kineinnovate</div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="mt-16 text-xs tracking-widest text-white/30">
+                    OR EMAIL HELLO@KINE.STUDIO
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-white/10 py-20">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center gap-x-3">
+                    <img src="images/img1.jpg" alt="KINE" class="w-8 h-8 rounded-full">
+                    <span class="logo-font text-4xl font-semibold tracking-tighter">KINE</span>
+                </div>
+                
+                <div class="text-sm text-white/40 mt-8 md:mt-0">
+                    AI • WEB • BRANDING
+                </div>
+                
+                <div class="text-xs text-white/30 mt-8 md:mt-0">
+                    © 2026 KINE — DIGITAL INNOVATION STUDIO
+                </div>
+            </div>
+
+            <!-- CREATOR AT THE BOTTOM -->
+            <div class="mt-16 pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-y-6">
+                <div class="flex items-center gap-x-5">
+                    <img src="images/imgprofile.jpg" alt="Sandro Arya Bima" 
+                         class="w-11 h-11 object-cover rounded-2xl border border-cyan-400/30 creator-avatar">
+                    <div>
+                        <div class="text-sm text-white/60">Crafted with passion by</div>
+                        <div class="font-semibold text-lg tracking-tight">Sandro Arya Bima</div>
+                    </div>
+                </div>
+                
+                <div class="text-xs text-white/40 flex items-center gap-x-8">
+                    <span>Founder &amp; Creative Director</span>
+                    <span class="hidden md:inline">•</span>
+                    <span>Central Java, Indonesia</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Particle system
+        function createParticles() {
+            const canvas = document.getElementById('hero-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            let width, height;
+            
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            
+            resize();
+            window.addEventListener('resize', resize);
+            
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 0.5 - 0.25;
+                    this.speedY = Math.random() * 0.5 - 0.25;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                }
+                
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    
+                    if (this.x < 0 || this.x > width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > height) this.speedY *= -1;
+                    
+                    for (let i = 0; i < particles.length; i++) {
+                        const p = particles[i];
+                        const dx = this.x - p.x;
+                        const dy = this.y - p.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 130) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(0, 243, 255, ${0.12 * (130 - distance) / 130})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.moveTo(this.x, this.y);
+                            ctx.lineTo(p.x, p.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = '#00f3ff';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#00f3ff';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+            
+            const particles = [];
+            for (let i = 0; i < 120; i++) {
+                particles.push(new Particle());
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        // Mobile menu
+        function initMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            let open = false;
+            
+            btn.addEventListener('click', () => {
+                open = !open;
+                if (open) {
+                    menu.classList.remove('hidden');
+                    menu.classList.add('flex');
+                    btn.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+                } else {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex');
+                    btn.innerHTML = `<i class="fa-solid fa-bars"></i>`;
+                }
+            });
+            
+            const links = document.querySelectorAll('.mobile-link');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex');
+                    btn.innerHTML = `<i class="fa-solid fa-bars"></i>`;
+                    open = false;
+                });
+            });
+        }
+
+        // Scroll progress bar
+        function initProgressBar() {
+            const progress = document.getElementById('progress');
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                progress.style.width = `${scrollPercent}%`;
+            });
+        }
+
+        // Fade in sections
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.15 });
+            
+            document.querySelectorAll('section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(60px)';
+                section.style.transition = 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
+                observer.observe(section);
+            });
+        }
+
+        // Smooth scroll
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') return;
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        const navHeight = 90;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - navHeight;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        // Keyboard escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                    document.getElementById('mobile-menu-btn').innerHTML = `<i class="fa-solid fa-bars"></i>`;
+                }
+            }
+        });
+
+        // Initialize
+        window.onload = function() {
+            createParticles();
+            initMobileMenu();
+            initProgressBar();
+            initScrollAnimations();
+            initSmoothScroll();
+            
+            console.log('%cKINE — Built by Sandro Arya Bima. Futuristic single-file experience ready.', 'color:#00f3ff; font-family:monospace');
+        };
+    </script>
+</body>
+</html>
