@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KINE — Digital Innovation Studio</title>
+  <meta name="description" content="KINE builds AI, Digital Products, and Future Technology. Premium studio crafting next-gen digital experiences.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { grotesk: ['Space Grotesk', 'sans-serif'], inter: ['Inter', 'sans-serif'] },
+          colors: { electric: '#00f3ff', violet: '#b14bff', indigo: '#6366f1' },
+          borderRadius: { '4xl': '2rem', '5xl': '3rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --electric: #00f3ff;
+      --violet: #b14bff;
+      --indigo: #4f46e5;
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+      --scroll-p: 0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CUSTOM CURSOR ── */
+    #cursor-ring {
+      position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+      border: 1.5px solid rgba(0,243,255,0.7);
+      border-radius: 50%; pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .4s ease, height .4s ease, border-color .4s ease, background .3s ease;
+      mix-blend-mode: screen;
+    }
+    #cursor-dot {
+      position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+      background: var(--electric); border-radius: 50%;
+      pointer-events: none; z-index: 10000;
+      transform: translate(-50%,-50%);
+      box-shadow: 0 0 12px var(--electric);
+      transition: transform .1s;
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 70px; height: 70px;
+      border-color: var(--violet);
+      background: rgba(177,75,255,0.06);
+    }
+    @media (pointer: coarse) { #cursor-ring, #cursor-dot { display: none; } body { cursor: auto; } }
+
+    /* ── GRAIN TEXTURE OVERLAY ── */
+    #grain {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      opacity: .028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--electric), var(--violet));
+      z-index: 9998; transition: width .1s linear;
+      box-shadow: 0 0 12px var(--electric);
+    }
+
+    /* ── DYNAMIC MESH BG ── */
+    .mesh-bg {
+      background:
+        radial-gradient(ellipse 80% 60% at var(--mouse-x) var(--mouse-y), rgba(0,243,255,.07) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(177,75,255,.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 45% at 10% 80%, rgba(79,70,229,.08) 0%, transparent 55%),
+        #000;
+      transition: background .05s;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .font-grotesk { font-family: 'Space Grotesk', sans-serif; }
+    h1, h2, h3, .logo { font-family: 'Space Grotesk', sans-serif; }
+
+    .hero-title {
+      font-size: clamp(5rem, 18vw, 18rem);
+      line-height: .9;
+      letter-spacing: -0.07em;
+      font-weight: 700;
+    }
+    .section-title {
+      font-size: clamp(2.8rem, 7vw, 7rem);
+      line-height: 1.0;
+      letter-spacing: -0.05em;
+      font-weight: 600;
+    }
+    .label-text {
+      font-size: clamp(.65rem, 1.2vw, .75rem);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    /* Shimmer text */
+    .shimmer-text {
+      background: linear-gradient(120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(0,243,255,.9) 30%,
+        rgba(177,75,255,.9) 55%,
+        rgba(255,255,255,0) 80%);
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 5s ease infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+
+    .grad-text {
+      background: linear-gradient(135deg, #fff 30%, #00f3ff 65%, #b14bff 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ── GLASSMORPHISM ── */
+    .glass {
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255,255,255,.09);
+    }
+    .glass-steel {
+      background: linear-gradient(135deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 100%);
+      backdrop-filter: blur(40px) saturate(200%);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    /* ── GLOW ── */
+    .glow-cyan  { box-shadow: 0 0 40px -10px #00f3ff, 0 0 80px -20px rgba(0,243,255,.4); }
+    .glow-violet { box-shadow: 0 0 40px -10px #b14bff, 0 0 80px -20px rgba(177,75,255,.4); }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      transition: all .5s cubic-bezier(.23,1,.32,1);
+      padding: 0;
+    }
+    #navbar.scrolled {
+      background: rgba(0,0,0,.8);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .nav-link {
+      font-size: .7rem; letter-spacing: .14em; font-weight: 500;
+      color: rgba(255,255,255,.55);
+      transition: color .4s ease, transform .3s ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+      background: var(--electric);
+      transition: width .4s cubic-bezier(.23,1,.32,1);
+    }
+    .nav-link:hover { color: #fff; transform: translateY(-1px); }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── CTA BUTTON ── */
+    .btn-cyber {
+      display: inline-flex; align-items: center; gap: .75rem;
+      padding: 1rem 2.5rem; border-radius: 2rem;
+      font-weight: 600; font-size: .95rem; letter-spacing: .04em;
+      background: #fff; color: #000;
+      border: none; cursor: none;
+      position: relative; overflow: hidden;
+      transition: transform .4s cubic-bezier(.23,1,.32,1), box-shadow .4s ease;
+      box-shadow: 0 0 0 0 rgba(0,243,255,0);
+    }
+    .btn-cyber:hover {
+      transform: scale(1.04) translateY(-3px);
+      box-shadow: 0 0 20px rgba(0,243,255,.5), 0 0 40px rgba(177,75,255,.3), 0 8px 32px rgba(0,0,0,.4);
+    }
+    .btn-cyber::before {
+      content: '';
+      position: absolute; inset: -2px; border-radius: inherit;
+      background: linear-gradient(135deg, var(--electric), var(--violet));
+      z-index: -1; opacity: 0;
+      transition: opacity .4s;
+    }
+    .btn-cyber:hover::before { opacity: 1; }
+    .btn-cyber span { position: relative; z-index: 1; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: .75rem;
+      padding: 1rem 2.5rem; border-radius: 2rem;
+      font-weight: 500; font-size: .95rem; letter-spacing: .04em;
+      background: transparent; color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.25); cursor: none;
+      transition: all .4s cubic-bezier(.23,1,.32,1);
+    }
+    .btn-ghost:hover {
+      border-color: var(--violet);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(177,75,255,.4), 0 0 40px rgba(177,75,255,.2);
+    }
+
+    /* ── SERVICE / BENTO CARDS ── */
+    .bento-card {
+      border-radius: 2rem;
+      transition: transform .6s cubic-bezier(.23,1,.32,1),
+                  box-shadow .6s cubic-bezier(.23,1,.32,1),
+                  border-color .4s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-10px) scale(1.01);
+    }
+    .bento-card.cyan:hover  { box-shadow: 0 0 50px -10px rgba(0,243,255,.4); border-color: rgba(0,243,255,.5) !important; }
+    .bento-card.violet:hover { box-shadow: 0 0 50px -10px rgba(177,75,255,.4); border-color: rgba(177,75,255,.5) !important; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px) scale(.97);
+      transition: opacity 1s cubic-bezier(.23,1,.32,1), transform 1s cubic-bezier(.23,1,.32,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .reveal-delay-1 { transition-delay: .15s; }
+    .reveal-delay-2 { transition-delay: .3s; }
+    .reveal-delay-3 { transition-delay: .45s; }
+
+    /* ── 3D SCROLL CARDS ── */
+    .scroll-3d {
+      transform: perspective(1000px) rotateX(var(--rx,8deg)) rotateY(var(--ry,0deg)) scale(var(--sc,.88));
+      opacity: var(--op, 0);
+      filter: blur(var(--bl, 4px));
+      transition: transform .8s cubic-bezier(.23,1,.32,1), opacity .8s ease, filter .8s ease;
+    }
+    .scroll-3d.active {
+      --rx: 0deg; --ry: 0deg; --sc: 1; --op: 1; --bl: 0px;
+    }
+
+    /* ── PORTFOLIO HORIZONTAL SCROLL ── */
+    #portfolio-track {
+      display: flex; gap: 2rem; width: max-content;
+      transition: transform .6s cubic-bezier(.23,1,.32,1);
+    }
+    .portfolio-item {
+      flex: 0 0 min(80vw, 640px); aspect-ratio: 16/10;
+      border-radius: 2rem; overflow: hidden; position: relative;
+      cursor: none;
+      transition: transform .5s cubic-bezier(.23,1,.32,1), box-shadow .5s ease;
+    }
+    .portfolio-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 60px -10px rgba(0,243,255,.4);
+    }
+    .portfolio-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .7s cubic-bezier(.23,1,.32,1);
+    }
+    .portfolio-item:hover img { transform: scale(1.1); }
+
+    /* ── BORDER BEAM (popular pricing card) ── */
+    @property --beam-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .border-beam {
+      position: relative;
+    }
+    .border-beam::before {
+      content: '';
+      position: absolute; inset: -1.5px; border-radius: inherit; z-index: -1;
+      background: conic-gradient(from var(--beam-angle), transparent 0%, var(--electric) 15%, var(--violet) 35%, transparent 50%);
+      animation: beam-rotate 3s linear infinite;
+    }
+    .border-beam::after {
+      content: '';
+      position: absolute; inset: 1px; border-radius: calc(2rem - 2px);
+      background: #000; z-index: -1;
+    }
+    @keyframes beam-rotate {
+      to { --beam-angle: 360deg; }
+    }
+
+    /* ── PARALAX ORBS ── */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; will-change: transform;
+    }
+
+    /* ── PING DOT ── */
+    .ping-dot {
+      position: relative; display: inline-flex;
+      width: 10px; height: 10px;
+    }
+    .ping-dot::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: var(--electric); opacity: .7;
+      animation: ping 1.6s cubic-bezier(0,0,.2,1) infinite;
+    }
+    .ping-dot::after {
+      content: ''; position: absolute; inset: 2px;
+      border-radius: 50%; background: var(--electric);
+    }
+    @keyframes ping {
+      75%,100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    /* ── MOBILE MENU ── */
+    #mobile-menu {
+      position: fixed; inset: 0; z-index: 490;
+      background: rgba(0,0,0,.97);
+      backdrop-filter: blur(30px);
+      display: flex; flex-direction: column;
+      padding: 6rem 2rem 3rem;
+      transform: translateX(100%);
+      transition: transform .6s cubic-bezier(.23,1,.32,1);
+    }
+    #mobile-menu.open { transform: translateX(0); }
+    .mobile-link {
+      font-size: 2.5rem; font-weight: 600; letter-spacing: -.05em;
+      color: rgba(255,255,255,.5);
+      transition: color .3s ease, transform .3s ease;
+      padding: .4rem 0;
+    }
+    .mobile-link:hover { color: #fff; transform: translateX(8px); }
+
+    /* ── FOOTER ── */
+    .creator-avatar {
+      transition: transform .4s cubic-bezier(.23,1,.32,1), box-shadow .4s ease;
+      cursor: none;
+    }
+    .creator-avatar:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 30px -5px var(--electric);
+    }
+
+    /* ── CANVAS ── */
+    #hero-canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  </style>
+</head>
+<body class="mesh-bg">
+  <!-- Grain -->
+  <div id="grain"></div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-ring"></div>
+  <div id="cursor-dot"></div>
+
+  <!-- Scroll Progress -->
+  <div id="progress"></div>
+
+  <!-- ════════════════════ NAVBAR ════════════════════ -->
+  <nav id="navbar">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
+      <!-- Left: Logo + Creator -->
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3">
+          <img src="images/img1.jpg" alt="KINE" class="w-9 h-9 object-contain rounded-full glow-cyan">
+          <span class="font-grotesk text-2xl font-semibold tracking-[-0.07em]">KINE</span>
+        </div>
+        <div class="hidden md:flex items-center gap-3 pl-5 border-l border-white/10">
+          <img src="images/imgprofile.jpg" alt="Sandro Arya Bima" class="creator-avatar w-7 h-7 object-cover rounded-xl border border-cyan-400/30">
+          <div>
+            <div class="text-[11px] font-medium tracking-tight">Sandro Arya Bima</div>
+            <div class="text-[9px] text-white/35 tracking-wide uppercase">Founder & Creative Director</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Nav -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#capabilities" class="nav-link">CAPABILITIES</a>
+        <a href="#services" class="nav-link">SERVICES</a>
+        <a href="#portfolio" class="nav-link">PORTFOLIO</a>
+        <a href="#kreasi-web" class="nav-link">PRICING</a>
+        <a href="#contact" class="nav-link">CONTACT</a>
+      </div>
+
+      <!-- Right -->
+      <div class="flex items-center gap-4">
+        <a href="https://wa.me/6281568493882" target="_blank"
+           class="hidden md:flex btn-ghost text-sm px-5 py-2.5 rounded-2xl">
+          <i class="fa-brands fa-whatsapp text-[#25D366]"></i>
+          <span>CHAT NOW</span>
+        </a>
+        <button id="mobile-menu-btn" class="md:hidden w-11 h-11 flex items-center justify-center text-xl text-white/70 hover:text-white transition-colors">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════════════════ MOBILE MENU ════════════════════ -->
+  <div id="mobile-menu">
+    <nav class="flex flex-col gap-3 mb-auto">
+      <a href="#capabilities" class="mobile-link">CAPABILITIES</a>
+      <a href="#services" class="mobile-link">SERVICES</a>
+      <a href="#portfolio" class="mobile-link">PORTFOLIO</a>
+      <a href="#kreasi-web" class="mobile-link">PRICING</a>
+      <a href="#contact" class="mobile-link">CONTACT</a>
+    </nav>
+    <div class="mt-8 pt-8 border-t border-white/10 flex items-center gap-4">
+      <img src="images/imgprofile.jpg" alt="Sandro" class="w-12 h-12 object-cover rounded-2xl border border-cyan-400/30">
+      <div>
+        <div class="font-semibold">Sandro Arya Bima</div>
+        <div class="text-xs text-white/40">Founder · KINE</div>
+      </div>
+    </div>
+    <a href="https://wa.me/6281568493882" target="_blank"
+       class="mt-6 flex items-center justify-center gap-3 py-5 rounded-3xl font-semibold text-xl text-black"
+       style="background: linear-gradient(135deg,#00f3ff,#b14bff)">
+      <i class="fa-brands fa-whatsapp"></i> MESSAGE ON WHATSAPP
+    </a>
+  </div>
+
+  <!-- ════════════════════ HERO ════════════════════ -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <canvas id="hero-canvas"></canvas>
+    <!-- Orbs -->
+    <div class="orb w-[600px] h-[600px] bg-violet-500/10 top-[-100px] left-[-100px]" data-parallax=".3"></div>
+    <div class="orb w-[500px] h-[500px] bg-cyan-400/10 bottom-[-80px] right-[-80px]" data-parallax=".2"></div>
+
+    <div class="relative z-10 max-w-screen-2xl mx-auto px-6 md:px-10 text-center pt-32 pb-24">
+      <!-- Pre-label -->
+      <div class="reveal inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/15 glass mb-10">
+        <span class="ping-dot"></span>
+        <span class="label-text text-white/60">DIGITAL INNOVATION STUDIO</span>
+      </div>
+
+      <!-- Hero Title -->
+      <h1 class="hero-title shimmer-text reveal reveal-delay-1 select-none">KINE</h1>
+
+      <!-- Subtitle -->
+      <p class="reveal reveal-delay-2 mt-6 max-w-2xl mx-auto text-xl md:text-2xl font-light tracking-tight text-white/50 leading-relaxed">
+        Building AI, Digital Products,<br class="hidden md:block"> and Future Technology
+      </p>
+
+      <!-- Buttons -->
+      <div class="reveal reveal-delay-3 mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="https://wa.me/6281568493882" target="_blank" class="btn-cyber">
+          <span>TALK TO US</span>
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+        </a>
+        <a href="#portfolio" class="btn-ghost">
+          <span>VIEW PROJECTS</span>
+          <i class="fa-solid fa-arrow-down text-xs"></i>
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/25 label-text">
+        <div class="w-px h-12 bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
+        SCROLL TO EXPLORE
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none"></div>
+  </section>
+
+  <!-- ════════════════════ KINE ARSENAL (BENTO) ════════════════════ -->
+  <section id="premium-products" class="py-28 bg-black relative overflow-hidden">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block px-6 py-2 label-text border border-white/15 rounded-full text-white/40 mb-6">KINE ARSENAL</span>
+        <h2 class="section-title grad-text">Premium AI Products</h2>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Card 1 – Cognivara -->
+        <div class="bento-card cyan glass-steel border border-white/10 p-10 reveal reveal-delay-1 scroll-3d">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-400/30 text-cyan-400 label-text mb-8">
+            <span class="ping-dot" style="--electric:#00f3ff"></span> AI ENGINE
+          </div>
+          <h3 class="font-grotesk text-4xl font-semibold tracking-tight mb-4">Cognivara<br>AI Builder</h3>
+          <p class="text-white/55 leading-relaxed text-base mb-10">Platform builder bertenaga AI untuk mempercepat pembuatan proyek digital Anda. Generate, edit, deploy dalam hitungan detik.</p>
+          <a href="http://lynk.id/everrlit/on9xn8oxe8ol/checkout" target="_blank" class="btn-cyber w-full justify-center">
+            <span>Get Cognivara</span> <span>→</span>
+          </a>
+        </div>
+
+        <!-- Card 2 – Blackvault -->
+        <div class="bento-card violet glass-steel border border-white/10 p-10 reveal reveal-delay-2 scroll-3d">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-violet-400/30 text-violet-400 label-text mb-8">
+            ✦ SECRET ASSET
+          </div>
+          <h3 class="font-grotesk text-4xl font-semibold tracking-tight mb-4">Blackvault<br>AI Prompt</h3>
+          <p class="text-white/55 leading-relaxed text-base mb-10">Koleksi prompt AI premium dan rahasia (Master Prompt) untuk memaksimalkan output kecerdasan buatan Anda.</p>
+          <a href="https://lynk.id/everrlit" target="_blank" class="btn-ghost w-full justify-center">
+            <span>Get Blackvault</span> <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ PRICING (KREASI WEB) — DIPINDAHKAN KE SINI ════════════════════ -->
+  <section id="kreasi-web" class="py-28 bg-black relative overflow-hidden">
+    <div class="orb w-[600px] h-[400px] bg-violet-500/6 top-0 left-1/2 -translate-x-1/2" data-parallax=".1"></div>
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block px-6 py-2 label-text border border-white/15 rounded-full text-white/40 mb-6">KREASI WEB DIGITAL</span>
+        <h2 class="section-title grad-text">Start Your Digital Journey</h2>
+        <p class="text-white/40 max-w-xl mx-auto mt-4 leading-relaxed">Pilih paket yang sesuai dengan visi kreatif Anda. Dari kado romantis hingga platform profesional berskala besar.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+        <!-- Card 1 -->
+        <div class="bento-card cyan glass-steel border border-white/10 p-8 reveal scroll-3d relative overflow-hidden">
+          <div class="label-text text-white/30 mb-2">STARTER</div>
+          <div class="font-grotesk text-2xl font-semibold mb-1">Web Surprise Pacar</div>
+          <div class="font-grotesk text-5xl font-bold mt-4 mb-8" style="background:linear-gradient(135deg,#00f3ff,#b14bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Rp 50k</div>
+          <ul class="space-y-3 mb-8 text-sm text-white/55">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Hadiah Digital Unik</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Custom Pesan Romantis</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Aktif Selamanya</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Mobile Friendly</li>
+          </ul>
+          <a href="https://wa.me/6281568493882" target="_blank" class="btn-ghost w-full justify-center text-sm py-3">
+            <i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp
+          </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bento-card cyan glass-steel border border-white/10 p-8 reveal reveal-delay-1 scroll-3d relative overflow-hidden">
+          <div class="label-text text-white/30 mb-2">BASIC</div>
+          <div class="font-grotesk text-2xl font-semibold mb-1">Web Basic</div>
+          <div class="font-grotesk text-5xl font-bold mt-4 mb-8" style="background:linear-gradient(135deg,#00f3ff,#b14bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Rp 150k</div>
+          <ul class="space-y-3 mb-8 text-sm text-white/55">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Landing Page Modern</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>High Performance</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Custom Domain Ready</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>3 Days Delivery</li>
+          </ul>
+          <a href="https://wa.me/6281568493882" target="_blank" class="btn-ghost w-full justify-center text-sm py-3">
+            <i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp
+          </a>
+        </div>
+
+        <!-- Card 3 POPULAR – Border Beam -->
+        <div class="border-beam bento-card rounded-[2rem] p-8 reveal reveal-delay-2 scroll-3d relative" style="background:linear-gradient(135deg,rgba(0,243,255,.08),rgba(177,75,255,.06));backdrop-filter:blur(40px)">
+          <div class="absolute -top-3 right-6 px-4 py-1 rounded-full label-text font-bold text-black" style="background:linear-gradient(135deg,#00f3ff,#b14bff)">POPULAR</div>
+          <div class="label-text text-cyan-400/70 mb-2">STANDARD</div>
+          <div class="font-grotesk text-2xl font-semibold mb-1">Web Standard</div>
+          <div class="font-grotesk text-5xl font-bold mt-4 mb-8" style="background:linear-gradient(135deg,#00f3ff,#b14bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Rp 350k</div>
+          <ul class="space-y-3 mb-8 text-sm text-white/70">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Multi-page Design</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Animasi Futuristik</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Integrasi Sosmed</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyan-400 text-xs"></i>Priority Support</li>
+          </ul>
+          <a href="https://wa.me/6281568493882" target="_blank" class="btn-cyber w-full justify-center text-sm py-3">
+            <i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp
+          </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bento-card violet glass-steel border border-white/10 p-8 reveal reveal-delay-3 scroll-3d relative overflow-hidden">
+          <div class="label-text text-white/30 mb-2">ELITE</div>
+          <div class="font-grotesk text-2xl font-semibold mb-1">Web Profesional</div>
+          <div class="font-grotesk text-5xl font-bold mt-4 mb-8" style="background:linear-gradient(135deg,#00f3ff,#b14bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Rp 500k</div>
+          <ul class="space-y-3 mb-8 text-sm text-white/55">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-violet-400 text-xs"></i>Full Custom Fungsionalitas</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-violet-400 text-xs"></i>Efek Cyberpunk Advanced</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-violet-400 text-xs"></i>Integrasi AI</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-violet-400 text-xs"></i>Garansi Maintenance</li>
+          </ul>
+          <a href="https://wa.me/6281568493882" target="_blank" class="btn-ghost w-full justify-center text-sm py-3" style="border-color:rgba(177,75,255,.4)">
+            <i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ CAPABILITIES ════════════════════ -->
+  <div id="capabilities">
+    <!-- AI Innovation -->
+    <section class="min-h-screen flex items-center relative bg-black py-20 overflow-hidden">
+      <div class="orb w-[500px] h-[500px] bg-cyan-400/8 top-10 right-[-150px]" data-parallax=".15"></div>
+      <div class="max-w-screen-2xl mx-auto px-6 md:px-10 grid md:grid-cols-12 gap-16 items-center">
+        <div class="md:col-span-7 reveal">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-cyan-400/30 text-cyan-400 label-text mb-8">
+            <span class="ping-dot"></span> NEXT-GEN AI
+          </div>
+          <h2 class="section-title text-white">AI Tools<br>Innovation</h2>
+          <p class="mt-8 max-w-lg text-lg text-white/55 leading-relaxed">We engineer intelligent systems that don't just automate — they anticipate, create, and evolve with you.</p>
+          <a href="#services" class="mt-10 inline-flex items-center gap-4 text-cyan-400 label-text group">
+            EXPLORE AI SOLUTIONS
+            <span class="block w-10 h-px bg-cyan-400 group-hover:w-20 transition-all duration-500"></span>
+          </a>
+        </div>
+        <div class="md:col-span-5 reveal reveal-delay-2 scroll-3d">
+          <div class="glass-steel rounded-3xl p-8 glow-cyan">
+            <div class="aspect-video bg-gradient-to-br from-violet-500/10 to-cyan-500/10 rounded-2xl flex items-center justify-center">
+              <div class="text-center">
+                <i class="fa-solid fa-brain text-7xl text-white/15"></i>
+                <p class="mt-4 label-text text-white/30">INTELLIGENCE ENGINE</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Web Development -->
+    <section class="min-h-screen flex items-center relative bg-black py-20 overflow-hidden">
+      <div class="orb w-[400px] h-[400px] bg-violet-500/8 bottom-0 left-[-100px]" data-parallax=".2"></div>
+      <div class="max-w-screen-2xl mx-auto px-6 md:px-10 grid md:grid-cols-12 gap-16 items-center">
+        <div class="md:col-span-5 order-2 md:order-1 reveal scroll-3d">
+          <div class="glass-steel rounded-3xl p-8 glow-violet">
+            <div class="aspect-video bg-black rounded-2xl flex items-center justify-center border border-white/10">
+              <div class="text-7xl font-light text-white/10">∞</div>
+            </div>
+          </div>
+        </div>
+        <div class="md:col-span-7 order-1 md:order-2 reveal reveal-delay-1">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-violet-400/30 text-violet-400 label-text mb-8">FUTURE WEB</div>
+          <h2 class="section-title text-white">Web Development<br>Reimagined</h2>
+          <p class="mt-8 max-w-lg text-lg text-white/55 leading-relaxed">Blazing-fast, AI-native websites that feel alive. Built with glassmorphism, motion, and intelligence.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Identity -->
+    <section class="min-h-screen flex items-center relative bg-black py-20 overflow-hidden">
+      <div class="max-w-screen-2xl mx-auto px-6 md:px-10 grid md:grid-cols-12 gap-16 items-center">
+        <div class="md:col-span-7 reveal">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-white/20 text-white/60 label-text mb-8">BRAND FUTURE</div>
+          <h2 class="section-title text-white">Brand Identity<br>Design</h2>
+          <p class="mt-8 max-w-lg text-lg text-white/55 leading-relaxed">We don't create logos. We create digital souls that resonate across universes.</p>
+        </div>
+        <div class="md:col-span-5 reveal reveal-delay-2 scroll-3d">
+          <div class="aspect-square bg-gradient-to-br from-white/5 to-transparent rounded-3xl glass-steel p-12 flex items-center justify-center">
+            <div class="w-40 h-40 rounded-2xl border-2 border-dashed border-white/20 flex items-center justify-center text-7xl font-grotesk font-bold text-white/20">K</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Digital Products -->
+    <section class="min-h-screen flex items-center relative bg-black py-20 overflow-hidden">
+      <div class="max-w-screen-2xl mx-auto px-6 md:px-10 grid md:grid-cols-12 gap-16 items-center">
+        <div class="md:col-span-5 reveal scroll-3d">
+          <div class="glass-steel rounded-3xl p-8 glow-cyan">
+            <img src="images/img2.jpg" alt="Digital Product" class="w-full rounded-2xl shadow-2xl">
+          </div>
+        </div>
+        <div class="md:col-span-7 reveal reveal-delay-1">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-cyan-400/30 text-cyan-400 label-text mb-8">DIGITAL CREATION</div>
+          <h2 class="section-title text-white">Digital Product<br>Creation</h2>
+          <p class="mt-8 max-w-lg text-lg text-white/55 leading-relaxed">From idea to launch in weeks. SaaS, apps, tools — designed for the future.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ════════════════════ SERVICES (BENTO) ════════════════════ -->
+  <section id="services" class="py-28 bg-black relative overflow-hidden">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="text-center mb-16 reveal">
+        <span class="inline-block px-6 py-2 label-text border border-white/15 rounded-full text-white/40 mb-6">WHAT WE BUILD</span>
+        <h2 class="section-title grad-text">Our Services</h2>
+      </div>
+
+      <!-- Bento grid with varying sizes -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Large card -->
+        <div class="bento-card cyan glass-steel border border-white/10 p-8 sm:col-span-2 lg:col-span-1 lg:row-span-2 flex flex-col reveal scroll-3d">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6"
+               style="background: linear-gradient(135deg,rgba(0,243,255,.2),rgba(177,75,255,.2));backdrop-filter:blur(10px);">🧠</div>
+          <h3 class="font-grotesk text-2xl font-semibold tracking-tight mb-3">AI Tools Development</h3>
+          <p class="text-white/50 text-sm leading-relaxed flex-1">Custom AI agents, automation engines, and intelligent assistants that scale with your vision. We make intelligence accessible.</p>
+          <div class="mt-8 h-px bg-gradient-to-r from-cyan-400/40 to-transparent"></div>
+        </div>
+
+        <div class="bento-card violet glass-steel border border-white/10 p-8 reveal reveal-delay-1 scroll-3d">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6"
+               style="background: linear-gradient(135deg,rgba(177,75,255,.2),rgba(0,243,255,.2));backdrop-filter:blur(10px);">🌐</div>
+          <h3 class="font-grotesk text-2xl font-semibold tracking-tight mb-3">Web Development</h3>
+          <p class="text-white/50 text-sm leading-relaxed">Immersive, lightning-fast digital experiences that redefine industry standards.</p>
+        </div>
+
+        <div class="bento-card cyan glass-steel border border-white/10 p-8 reveal reveal-delay-2 scroll-3d">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6"
+               style="background: linear-gradient(135deg,rgba(0,243,255,.2),rgba(255,255,255,.1));backdrop-filter:blur(10px);">✦</div>
+          <h3 class="font-grotesk text-2xl font-semibold tracking-tight mb-3">Logo Design</h3>
+          <p class="text-white/50 text-sm leading-relaxed">Timeless marks with futuristic energy. Your identity, elevated.</p>
+        </div>
+
+        <div class="bento-card violet glass-steel border border-white/10 p-8 reveal reveal-delay-1 scroll-3d">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6"
+               style="background: linear-gradient(135deg,rgba(177,75,255,.2),rgba(0,243,255,.2));backdrop-filter:blur(10px);">∞</div>
+          <h3 class="font-grotesk text-2xl font-semibold tracking-tight mb-3">Brand Identity</h3>
+          <p class="text-white/50 text-sm leading-relaxed">Complete visual systems that tell your story across every touchpoint.</p>
+        </div>
+
+        <div class="bento-card cyan glass-steel border border-white/10 p-8 reveal reveal-delay-2 scroll-3d">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6"
+               style="background: linear-gradient(135deg,rgba(0,243,255,.2),rgba(177,75,255,.2));backdrop-filter:blur(10px);">📱</div>
+          <h3 class="font-grotesk text-2xl font-semibold tracking-tight mb-3">Product Mockups</h3>
+          <p class="text-white/50 text-sm leading-relaxed">Hyper-realistic 3D renders and prototypes that sell before you build.</p>
+        </div>
+
+        <div class="bento-card violet glass-steel border border-white/10 p-8 sm:col-span-2 lg:col-span-1 reveal reveal-delay-3 scroll-3d">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mb-6"
+               style="background: linear-gradient(135deg,rgba(177,75,255,.2),rgba(255,255,255,.1));backdrop-filter:blur(10px);">🚀</div>
+          <h3 class="font-grotesk text-2xl font-semibold tracking-tight mb-3">Digital Product Creation</h3>
+          <p class="text-white/50 text-sm leading-relaxed">End-to-end SaaS, apps, and tools that launch faster and perform better.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ PORTFOLIO (HORIZONTAL SCROLL) ════════════════════ -->
+  <section id="portfolio" class="py-28 bg-black overflow-hidden">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="flex justify-between items-end mb-14 reveal">
+        <div>
+          <span class="label-text text-white/30">SELECTED WORK</span>
+          <h2 class="section-title grad-text mt-2">Recent Creations</h2>
+        </div>
+        <a href="#" onclick="alert('Portfolio coming soon!');return false;"
+           class="hidden md:flex items-center gap-3 label-text text-cyan-400 hover:text-white transition-colors group">
+          VIEW ALL WORK <span class="text-2xl leading-none group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Horizontal track -->
+    <div class="relative overflow-hidden px-6 md:px-10" id="portfolio-wrapper">
+      <div id="portfolio-track">
+        <div class="portfolio-item" onclick="window.open('https://lynk.id/everrlit','_blank')">
+          <img src="images/img2.jpg" alt="Project Horizon">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <div class="label-text text-white/50 mb-1">AI PLATFORM</div>
+            <div class="font-grotesk text-2xl font-semibold">Project Horizon</div>
+          </div>
+        </div>
+        <div class="portfolio-item" onclick="window.open('https://lynk.id/everrlit','_blank')">
+          <img src="images/img3.jpg" alt="Neon Nexus">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <div class="label-text text-white/50 mb-1">BRANDING</div>
+            <div class="font-grotesk text-2xl font-semibold">Neon Nexus</div>
+          </div>
+        </div>
+        <div class="portfolio-item" onclick="window.open('https://lynk.id/everrlit','_blank')">
+          <img src="images/img4.jpg" alt="Pulse Studio">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <div class="label-text text-white/50 mb-1">WEB APP</div>
+            <div class="font-grotesk text-2xl font-semibold">Pulse Studio</div>
+          </div>
+        </div>
+        <div class="portfolio-item" onclick="window.open('https://lynk.id/everrlit','_blank')">
+          <img src="images/img5.jpg" alt="Aether OS">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <div class="label-text text-white/50 mb-1">PRODUCT</div>
+            <div class="font-grotesk text-2xl font-semibold">Aether OS</div>
+          </div>
+        </div>
+        <div class="portfolio-item" onclick="window.open('https://lynk.id/everrlit','_blank')">
+          <img src="images/img2.jpg" alt="Volt Interface">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <div class="label-text text-white/50 mb-1">UI DESIGN</div>
+            <div class="font-grotesk text-2xl font-semibold">Volt Interface</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll arrows -->
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10 mt-10 flex gap-4">
+      <button id="port-prev" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-cyan-400 hover:text-cyan-400 transition-all text-white/50">
+        <i class="fa-solid fa-arrow-left text-sm"></i>
+      </button>
+      <button id="port-next" class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-cyan-400 hover:text-cyan-400 transition-all text-white/50">
+        <i class="fa-solid fa-arrow-right text-sm"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- ════════════════════ PRODUCT SECTION ════════════════════ -->
+  <section id="product" class="py-28 bg-black relative overflow-hidden">
+    <div class="orb w-[500px] h-[500px] bg-cyan-400/6 bottom-0 right-[-100px]" data-parallax=".18"></div>
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="grid lg:grid-cols-2 gap-20 items-center">
+        <div class="reveal">
+          <div class="inline-block px-5 py-2 label-text border border-cyan-400/40 rounded-full text-cyan-400 mb-8">NEW PRODUCT</div>
+          <h2 class="font-grotesk font-bold leading-none tracking-tight grad-text" style="font-size:clamp(3rem,8vw,6rem)">APP WEB<br>BUILDER</h2>
+          <p class="mt-8 max-w-lg text-lg text-white/55 leading-relaxed">A powerful tool that helps creators, entrepreneurs, and businesses launch modern websites in minutes using AI and smart templates.</p>
+
+          <div class="mt-10 flex flex-wrap gap-4">
+            <a href="https://lynk.id/everrlit" target="_blank" class="btn-cyber">
+              GET THE PRODUCT <span>→</span>
+            </a>
+            <a href="https://wa.me/6281568493882" target="_blank" class="btn-ghost">
+              <i class="fa-brands fa-whatsapp"></i> Ask about pricing
+            </a>
+          </div>
+
+          <div class="mt-14 grid grid-cols-2 gap-8 text-sm">
+            <div class="flex gap-4">
+              <span class="text-cyan-400 font-grotesk text-2xl font-semibold">01</span>
+              <div><div class="font-medium">AI-Powered Templates</div><div class="text-white/40 text-xs mt-1">Instant generation with your brand voice</div></div>
+            </div>
+            <div class="flex gap-4">
+              <span class="text-cyan-400 font-grotesk text-2xl font-semibold">02</span>
+              <div><div class="font-medium">Real-time Collaboration</div><div class="text-white/40 text-xs mt-1">Built for teams and clients</div></div>
+            </div>
+            <div class="flex gap-4">
+              <span class="text-cyan-400 font-grotesk text-2xl font-semibold">03</span>
+              <div><div class="font-medium">Export Anywhere</div><div class="text-white/40 text-xs mt-1">Webflow, Framer, or custom code</div></div>
+            </div>
+            <div class="flex gap-4">
+              <span class="text-cyan-400 font-grotesk text-2xl font-semibold">04</span>
+              <div><div class="font-medium">Zero-code Future</div><div class="text-white/40 text-xs mt-1">Launch in under 60 seconds</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2 scroll-3d">
+          <div class="glass-steel rounded-3xl p-6 glow-cyan">
+            <div class="bg-black rounded-2xl overflow-hidden border border-white/10">
+              <div class="h-10 bg-zinc-950 flex items-center px-5 gap-2">
+                <div class="flex gap-1.5">
+                  <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                </div>
+                <div class="flex-1 text-center text-xs text-white/25">appweb.kine.studio</div>
+              </div>
+              <div class="p-6 bg-gradient-to-br from-zinc-900 to-black">
+                <div class="h-7 w-3/4 bg-white/8 rounded-lg mb-6"></div>
+                <div class="grid grid-cols-3 gap-3">
+                  <div class="h-36 bg-white/5 rounded-xl"></div>
+                  <div class="h-36 bg-white/5 rounded-xl"></div>
+                  <div class="h-36 rounded-xl flex items-center justify-center text-3xl" style="background:linear-gradient(135deg,rgba(0,243,255,.15),rgba(177,75,255,.15))">✦</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -top-5 -right-3 glass-steel px-6 py-3 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-2xl">
+            <span class="text-emerald-400">●</span> LIVE DEMO
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ CONTACT ════════════════════ -->
+  <section id="contact" class="py-28 bg-black relative overflow-hidden">
+    <div class="orb w-[700px] h-[400px] bg-violet-500/6 top-0 left-1/2 -translate-x-1/2" data-parallax=".05"></div>
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="glass-steel rounded-[2.5rem] p-12 md:p-20 max-w-3xl mx-auto text-center reveal">
+        <span class="inline-block px-6 py-2 label-text border border-white/15 rounded-full text-white/40 mb-8">LET'S CONNECT</span>
+        <h2 class="font-grotesk text-5xl md:text-6xl font-bold tracking-tight grad-text mb-6">Ready to build<br>the future?</h2>
+        <p class="text-white/40 text-lg mb-14">Let's create something that doesn't exist yet.</p>
+
+        <div class="flex flex-col md:flex-row gap-5 justify-center">
+          <a href="https://wa.me/6281568493882" target="_blank"
+             class="flex-1 flex items-center justify-center gap-4 py-7 rounded-3xl font-semibold text-black transition-all hover:scale-[1.03] hover:brightness-110"
+             style="background:#25D366">
+            <i class="fa-brands fa-whatsapp text-3xl"></i>
+            <div class="text-left">
+              <div class="text-xs opacity-75">WHATSAPP</div>
+              <div class="text-xl font-semibold">0815-6849-3882</div>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/kineinnovate?igsh=cDVmMHV4OHZjZnFx" target="_blank"
+             class="flex-1 flex items-center justify-center gap-4 py-7 rounded-3xl font-semibold text-white transition-all hover:scale-[1.03] hover:brightness-110"
+             style="background:linear-gradient(135deg,#e1306c,#833ab4,#6f26d2)">
+            <i class="fa-brands fa-instagram text-3xl"></i>
+            <div class="text-left">
+              <div class="text-xs opacity-75">INSTAGRAM</div>
+              <div class="text-xl font-semibold">@kineinnovate</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="mt-12 label-text text-white/20">OR EMAIL HELLO@KINE.STUDIO</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ FOOTER ════════════════════ -->
+  <footer class="bg-black border-t border-white/8 py-16">
+    <div class="max-w-screen-2xl mx-auto px-6 md:px-10">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-3">
+          <img src="images/img1.jpg" alt="KINE" class="w-8 h-8 rounded-full">
+          <span class="font-grotesk text-3xl font-semibold tracking-[-0.07em]">KINE</span>
+        </div>
+        <div class="label-text text-white/30">AI • WEB • BRANDING</div>
+        <div class="text-xs text-white/25">© 2026 KINE — DIGITAL INNOVATION STUDIO</div>
+      </div>
+
+      <div class="mt-12 pt-10 border-t border-white/8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+          <img src="images/imgprofile.jpg" alt="Sandro Arya Bima" class="creator-avatar w-12 h-12 object-cover rounded-2xl border border-cyan-400/25">
+          <div>
+            <div class="text-xs text-white/40 mb-1">Crafted with passion by</div>
+            <div class="font-semibold text-lg tracking-tight">Sandro Arya Bima</div>
+          </div>
+        </div>
+        <div class="label-text text-white/30 flex items-center gap-6">
+          <span>Founder & Creative Director</span>
+          <span class="hidden md:inline">•</span>
+          <span>Central Java, Indonesia</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════════════════════ JAVASCRIPT ════════════════════ -->
+  <script>
+  // ── CUSTOM CURSOR ──────────────────────────────────────────
+  const ring = document.getElementById('cursor-ring');
+  const dot  = document.getElementById('cursor-dot');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+  });
+  (function animCursor() {
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animCursor);
+  })();
+
+  // ── MOUSE MESH BG ──────────────────────────────────────────
+  document.addEventListener('mousemove', e => {
+    const xp = (e.clientX / window.innerWidth * 100).toFixed(2) + '%';
+    const yp = (e.clientY / window.innerHeight * 100).toFixed(2) + '%';
+    document.documentElement.style.setProperty('--mouse-x', xp);
+    document.documentElement.style.setProperty('--mouse-y', yp);
+  });
+
+  // ── HERO PARTICLE CANVAS ───────────────────────────────────
+  (function initCanvas() {
+    const cv = document.getElementById('hero-canvas');
+    const ctx = cv.getContext('2d');
+    let W, H;
+    function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const PTS = Array.from({length: 90}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random()-.5)*.4, vy: (Math.random()-.5)*.4,
+      r: Math.random()*2+.5, a: Math.random()*.5+.15
+    }));
+
+    function tick() {
+      ctx.clearRect(0,0,W,H);
+      PTS.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<0||p.x>W) p.vx*=-1;
+        if(p.y<0||p.y>H) p.vy*=-1;
+        // connections
+        PTS.forEach(q => {
+          const dx=p.x-q.x, dy=p.y-q.y, d=Math.hypot(dx,dy);
+          if(d<140) {
+            ctx.beginPath();
+            ctx.strokeStyle=`rgba(0,243,255,${.1*(1-d/140)})`;
+            ctx.lineWidth=.7;
+            ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+            ctx.stroke();
+          }
+        });
+        // draw dot
+        ctx.save();
+        ctx.globalAlpha=p.a;
+        ctx.fillStyle='#00f3ff';
+        ctx.shadowBlur=12; ctx.shadowColor='#00f3ff';
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill(); ctx.restore();
+      });
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+
+  // ── SCROLL PROGRESS BAR ────────────────────────────────────
+  const prog = document.getElementById('progress');
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const st = window.scrollY;
+    const dh = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (st/dh*100) + '%';
+    navbar.classList.toggle('scrolled', st > 60);
+    document.documentElement.style.setProperty('--scroll-p', (st/dh).toFixed(4));
+  }, {passive:true});
+
+  // ── SCROLL REVEAL (IntersectionObserver) ──────────────────
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ── 3D SCROLL CARDS ────────────────────────────────────────
+  const scroll3dObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('active'); scroll3dObs.unobserve(e.target); }
+    });
+  }, {threshold:.18});
+  document.querySelectorAll('.scroll-3d').forEach(el => scroll3dObs.observe(el));
+
+  // ── PARALLAX ORBS ─────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const sy = window.scrollY;
+    document.querySelectorAll('[data-parallax]').forEach(orb => {
+      const speed = parseFloat(orb.dataset.parallax||'.1');
+      orb.style.transform = `translateY(${sy*speed}px)`;
+    });
+  }, {passive:true});
+
+  // ── PORTFOLIO HORIZONTAL SCROLL ────────────────────────────
+  const track   = document.getElementById('portfolio-track');
+  const wrapper = document.getElementById('portfolio-wrapper');
+  let portIdx = 0;
+  const getStep = () => wrapper.clientWidth * .85;
+
+  function portSlide(dir) {
+    const items = track.querySelectorAll('.portfolio-item');
+    const maxIdx = items.length - 1;
+    portIdx = Math.max(0, Math.min(portIdx + dir, maxIdx));
+    track.style.transform = `translateX(-${portIdx * (getStep() + 32)}px)`;
+  }
+  document.getElementById('port-next').addEventListener('click', () => portSlide(1));
+  document.getElementById('port-prev').addEventListener('click', () => portSlide(-1));
+
+  // Touch swipe
+  let tsx = 0;
+  wrapper.addEventListener('touchstart', e => tsx = e.touches[0].clientX, {passive:true});
+  wrapper.addEventListener('touchend', e => {
+    const dx = tsx - e.changedTouches[0].clientX;
+    if(Math.abs(dx)>50) portSlide(dx>0?1:-1);
+  });
+
+  // Auto-scroll portfolio when section enters view
+  const portSection = document.getElementById('portfolio');
+  let portAuto;
+  const portAutoObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        portAuto = setInterval(() => {
+          const items = track.querySelectorAll('.portfolio-item');
+          if(portIdx < items.length-1) portSlide(1);
+          else { portIdx=-1; portSlide(1); }
+        }, 2800);
+      } else { clearInterval(portAuto); }
+    });
+  }, {threshold:.3});
+  portAutoObs.observe(portSection);
+
+  // ── MOBILE MENU ────────────────────────────────────────────
+  const mmBtn  = document.getElementById('mobile-menu-btn');
+  const mmMenu = document.getElementById('mobile-menu');
+  let mmOpen = false;
+  function toggleMenu(force) {
+    mmOpen = force !== undefined ? force : !mmOpen;
+    mmMenu.classList.toggle('open', mmOpen);
+    mmBtn.innerHTML = mmOpen
+      ? '<i class="fa-solid fa-xmark"></i>'
+      : '<i class="fa-solid fa-bars"></i>';
+    document.body.style.overflow = mmOpen ? 'hidden' : '';
+  }
+  mmBtn.addEventListener('click', () => toggleMenu());
+  mmMenu.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => toggleMenu(false)));
+  document.addEventListener('keydown', e => e.key==='Escape' && toggleMenu(false));
+
+  // ── SMOOTH SCROLL ─────────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const id = this.getAttribute('href');
+      if(id==='#') return;
+      e.preventDefault();
+      const target = document.querySelector(id);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  console.log('%cKINE — Digital Soul. Built by Sandro Arya Bima.', 'color:#00f3ff;font-family:Space Grotesk,sans-serif;font-size:1.1rem');
+  </script>
+</body>
+</html>
